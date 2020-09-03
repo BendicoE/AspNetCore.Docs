@@ -133,7 +133,7 @@ message Person {
 }
 ```
 
-C# generated messages don't expose the wrappers. Value type properties use .NET nullable types, for example `int?`. Reference type properties with `string` and `ByteString` values are unchanged except assigning `null` no longer throws an error.
+`wrappers.proto` types aren't exposed in generated properties. Protobuf automatically maps them to appropriate .NET nullable types when generating C# messages. For example, a `google.protobuf.Int32Value` field generates a `int?` property. Reference type properties like `string` and `ByteString` are unchanged except `null` can be assigned to them without error.
 
 The following table shows the complete list of wrapper types with their equivalent C# type:
 
