@@ -133,19 +133,21 @@ message Person {
 }
 ```
 
-Protobuf uses .NET nullable types, for example, `int?`, for the generated message property.
+C# generated messages don't expose the wrappers. Value type properties use .NET nullable types, for example `int?`. Reference type properties with `string` and `ByteString` values are unchanged except assigning `null` no longer throws an error.
 
 The following table shows the complete list of wrapper types with their equivalent C# type:
 
-| C# type   | Well-Known Type wrapper       |
-| --------- | ----------------------------- |
-| `bool?`   | `google.protobuf.BoolValue`   |
-| `double?` | `google.protobuf.DoubleValue` |
-| `float?`  | `google.protobuf.FloatValue`  |
-| `int?`    | `google.protobuf.Int32Value`  |
-| `long?`   | `google.protobuf.Int64Value`  |
-| `uint?`   | `google.protobuf.UInt32Value` |
-| `ulong?`  | `google.protobuf.UInt64Value` |
+| C# type      | Well-Known Type wrapper       |
+| ------------ | ----------------------------- |
+| `bool?`      | `google.protobuf.BoolValue`   |
+| `double?`    | `google.protobuf.DoubleValue` |
+| `float?`     | `google.protobuf.FloatValue`  |
+| `int?`       | `google.protobuf.Int32Value`  |
+| `long?`      | `google.protobuf.Int64Value`  |
+| `uint?`      | `google.protobuf.UInt32Value` |
+| `ulong?`     | `google.protobuf.UInt64Value` |
+| `string`     | `google.protobuf.StringValue` |
+| `ByteString` | `google.protobuf.BytesValue`  |
 
 ### Bytes
 
@@ -160,10 +162,10 @@ var payload = new PayloadResponse();
 payload.Data = ByteString.CopyFrom(data);
 ```
 
-A `ByteString`s data can be accessed using `ByteString.Span` or `ByteString.Memory`. Or call `ByteString.ToByteArray()` to convert an instance back into a byte array:
+A `ByteString`s data can be accessed directly using `ByteString.Span` or `ByteString.Memory`. Or call `ByteString.ToByteArray()` to convert an instance back into a byte array:
 
 ```csharp
-var payload = client.GetPayload(new PayloadRequest());
+var payload = await client.GetPayload(new PayloadRequest());
 
 await File.WriteAllBytesAsync(path, payload.Data.ToByteArray());
 ```
